@@ -5,7 +5,7 @@ import slicense.main.Handler;
 import slicense.main.Utils;
 import slicense.main.entities.EntityManager;
 import slicense.main.entities.Unit1;
-import slicense.main.tiles.Tile;
+import slicense.main.tiles.*;
 
 /**
  *
@@ -17,7 +17,7 @@ public class Level {
     private int width, height;
     private int spawnX, spawnY;
     
-    private int[][] tiles;
+    private Tile[][] tiles;
     
     //Entities
     private EntityManager entityManager;
@@ -45,7 +45,7 @@ public class Level {
 
         for (int y = yStart; y < yEnd; y++) {
             for (int x = xStart; x < xEnd; x++) {
-                getTileType(x, y).render(g, (int) (x * Tile.TILEWIDTH - handler.getGameCamera().getxOffset()),
+                tiles[x][y].render(g, (int) (x * Tile.TILEWIDTH - handler.getGameCamera().getxOffset()),
                         (int) (y * Tile.TILEHEIGHT - handler.getGameCamera().getyOffset()));
             }
         }
@@ -55,16 +55,12 @@ public class Level {
         handler.getGameCamera().updateCamera(g);
     }
 
-    public Tile getTileType(int x, int y) {
+    public TileID getTileID(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height) {//if no tile is found
-            return Tile.nullTile;//defaults to grass
+            return TileID.Null; //defaults to null
         }
 
-        Tile t = Tile.tiles[tiles[x][y]];//determines which tile to put where
-        if (t == null) { //backup case if the tile is not found
-            return Tile.grassTile;//still is grass
-        }
-        return t;
+        return tiles[x][y].getID();
     }
 
     private void loadWorld(String path) {
@@ -75,10 +71,21 @@ public class Level {
         spawnX = Utils.parseInt(tokens[2]);
         spawnY = Utils.parseInt(tokens[3]);
 
-        tiles = new int[width][height];
+        tiles = new Tile[width][height];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                tiles[x][y] = Utils.parseInt(tokens[(x + y * width) + 4]);
+                int tt = Utils.parseInt(tokens[(x + y * width) + 4]);
+                switch (tt) {
+                    case 0:
+                        tiles[x][y] = new GrassTile(x, y);
+                        break;
+                    case 1:
+                        tiles[x][y] = new WaterTile(x, y);
+                        break;
+                    default:
+                        System.err.println("Unregonized tile id " + tt + "!");
+                        break;
+                }
             }
         }
     }
@@ -103,7 +110,7 @@ public class Level {
         this.handler = handler;
     }
     
-    public int[][] getTiles(){
+    public Tile[][] getTiles(){
         return tiles;
     }
 }

@@ -8,8 +8,8 @@ import slicense.main.gfx.Assets;
  */
 public class WaterTile extends Tile{
     
-    public WaterTile(int id) {
-		super(Assets.water, id);
-	}
+    public WaterTile(int worldX, int worldY) {
+	super(worldX, worldY, Assets.water, TileID.Water);
+    }
     
 }

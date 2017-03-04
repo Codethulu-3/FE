@@ -14,20 +14,20 @@ public class Tile {
     //STATIC STUFF HERE
     
     public static Tile[] tiles = new Tile[256];
-    public static Tile nullTile = new NullTile(255);
-    public static Tile grassTile = new GrassTile(0);
-    public static Tile waterTile = new WaterTile(1);
+
     
     //CLASS
     public static final int TILEWIDTH = 64, TILEHEIGHT = 64;
     protected BufferedImage texture;
-    protected final int id;
+    protected final TileID id;
+    private int worldX, worldY;
 
-    public Tile(BufferedImage texture, int id) {
+    public Tile(int worldX, int worldY, BufferedImage texture, TileID id) {
         this.texture = texture;
         this.id = id;
 
-        tiles[id] = this;
+        this.worldX = worldX;
+        this.worldY = worldY;
     }
 
     public void tick() {
@@ -42,7 +42,15 @@ public class Tile {
     }
     
 
-    public int getId() {
+    public TileID getID() {
         return id;
+    }
+    
+    public int getWorldX() {
+        return worldX;
+    }
+    
+    public int getWorldY() {
+        return worldY;
     }
 }

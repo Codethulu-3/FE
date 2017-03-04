@@ -8,8 +8,8 @@ import slicense.main.gfx.Assets;
  */
 public class NullTile extends Tile{
     
-    public NullTile(int id){
-        super(Assets.grass, id);
+    public NullTile(int worldX, int worldY){
+        super(worldX, worldY, Assets.grass, TileID.Null);
     }
     
     @Override

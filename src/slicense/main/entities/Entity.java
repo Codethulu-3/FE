@@ -2,6 +2,7 @@ package slicense.main.entities;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import slicense.main.Handler;
 import slicense.main.gfx.Assets;
 import slicense.main.tiles.Tile;
@@ -75,6 +76,8 @@ public abstract class Entity {
         if(selected){
             //highlight
             g.drawImage(Assets.highlight,(int) x ,(int) y, Tile.TILEWIDTH,Tile.TILEHEIGHT, null);
+            
+            ArrayList<Tile> pool = new ArrayList<Tile>();
         }
     }
     
