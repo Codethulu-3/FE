@@ -93,7 +93,7 @@ public class Game extends GameLoop{
         
     }
     
-    public void draw(Graphics g){
+    public void draw(Graphics g){//draws
         g.clipRect(0, 0, width, height);
         State.getState().render(g);
     }

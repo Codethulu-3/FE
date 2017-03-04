@@ -10,17 +10,17 @@ public class GameState extends State {
 
     public GameState(Handler handler) {
         super(handler);
-        level = new Level(handler, "res/levels/level1.txt");
-        handler.setLevel(level);
+        level = new Level(handler, "res/levels/level1.txt");//loads current level
+        handler.setLevel(level);//sets getter for level in handler
     }
 
     @Override
     public void tick() {
-        level.tick();
+        level.tick();//calls the levels tick
     }
 
     @Override
     public void render(Graphics g) {
-        level.render(g);
+        level.render(g);//calls render
     }
 }

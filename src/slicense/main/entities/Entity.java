@@ -44,7 +44,7 @@ public abstract class Entity {
     
     //exending methods
     
-    public void update(){
+    public void update(){//to be called in units
         select();
         move();
         x=xStart - handler.getGameCamera().getxOffset();
