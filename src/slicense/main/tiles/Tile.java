@@ -34,7 +34,7 @@ public class Tile {
     }
 
     public void render(Graphics g, int x, int y) {
-        g.drawImage(texture, x, y, TILEWIDTH, TILEHEIGHT, null);
+        System.err.println("Render has not been overridden!");
     }
 
     public boolean isSolid() {

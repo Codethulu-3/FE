@@ -42,11 +42,12 @@ public class Level {
         int xEnd = (int) Math.min(width, (handler.getGameCamera().getxOffset() + handler.getWidth()) / Tile.TILEWIDTH + 1);
         int yStart = (int) Math.max(0, handler.getGameCamera().getyOffset() / Tile.TILEHEIGHT);
         int yEnd = (int) Math.min(height, (handler.getGameCamera().getyOffset() + handler.getHeight()) / Tile.TILEHEIGHT + 1);
-
+        
         for (int y = yStart; y < yEnd; y++) {
             for (int x = xStart; x < xEnd; x++) {
-                tiles[x][y].render(g, (int) (x * Tile.TILEWIDTH - handler.getGameCamera().getxOffset()),
-                        (int) (y * Tile.TILEHEIGHT - handler.getGameCamera().getyOffset()));
+                int screenX = (int) (x * Tile.TILEWIDTH - handler.getGameCamera().getxOffset());
+                int screenY = (int) (y * Tile.TILEHEIGHT - handler.getGameCamera().getyOffset());
+                tiles[x][y].render(g, screenX, screenY);
             }
         }
         //Entities
