@@ -12,7 +12,7 @@ import static slicense.main.tiles.Tile.TILEWIDTH;
 public class NullTile extends Tile{
     
     public NullTile(int worldX, int worldY){
-        super(worldX, worldY, Assets.grass, TileID.Null);
+        super(worldX, worldY, TileID.Null);
     }
     
     @Override

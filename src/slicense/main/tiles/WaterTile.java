@@ -12,7 +12,7 @@ import static slicense.main.tiles.Tile.TILEWIDTH;
 public class WaterTile extends Tile{
     
     public WaterTile(int worldX, int worldY) {
-	super(worldX, worldY, Assets.water, TileID.Water);
+	super(worldX, worldY, TileID.Water);
     }
     
     @Override

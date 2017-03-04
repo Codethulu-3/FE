@@ -8,7 +8,7 @@ import static slicense.main.tiles.Tile.TILEWIDTH;
 public class GrassTile extends Tile {
 
 	public GrassTile(int worldX, int worldY) {
-            super(worldX, worldY, Assets.grass, TileID.Grass);
+            super(worldX, worldY, TileID.Grass);
 	}
 
         @Override

@@ -18,12 +18,10 @@ public class Tile {
     
     //CLASS
     public static final int TILEWIDTH = 64, TILEHEIGHT = 64;
-    protected BufferedImage texture;
     protected final TileID id;
     private int worldX, worldY;
 
-    public Tile(int worldX, int worldY, BufferedImage texture, TileID id) {
-        this.texture = texture;
+    public Tile(int worldX, int worldY, TileID id) {
         this.id = id;
 
         this.worldX = worldX;
