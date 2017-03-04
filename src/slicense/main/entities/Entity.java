@@ -74,16 +74,7 @@ public abstract class Entity {
     public void drawEffects(Graphics g){
         if(selected){
             //highlight
-            int tempx=moveRange;
-            int tempy=0;
-            for(int i = 0; i <= moveRange; i++){
-                g.drawImage(Assets.highlight,(int) x + (tempx * Tile.TILEWIDTH),(int) y + (tempy * Tile.TILEHEIGHT), Tile.TILEWIDTH,Tile.TILEHEIGHT, null);
-                g.drawImage(Assets.highlight,(int) x - (tempx * Tile.TILEWIDTH),(int) y - (tempy * Tile.TILEHEIGHT), Tile.TILEWIDTH,Tile.TILEHEIGHT, null);
-                //if(tempy>tempx){
-                    tempx--;
-                    tempy++;
-                //}
-            }
+            g.drawImage(Assets.highlight,(int) x ,(int) y, Tile.TILEWIDTH,Tile.TILEHEIGHT, null);
         }
     }
     

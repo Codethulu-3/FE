@@ -57,7 +57,7 @@ public class Level {
 
     public Tile getTile(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height) {//if no tile is found
-            return Tile.grassTile;//defaults to grass
+            return Tile.nullTile;//defaults to grass
         }
 
         Tile t = Tile.tiles[tiles[x][y]];//determines which tile to put where
