@@ -102,4 +102,8 @@ public class Level {
     public void setHandler(Handler handler) {
         this.handler = handler;
     }
+    
+    public int[][] getTiles(){
+        return tiles;
+    }
 }
