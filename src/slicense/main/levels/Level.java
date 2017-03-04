@@ -45,7 +45,7 @@ public class Level {
 
         for (int y = yStart; y < yEnd; y++) {
             for (int x = xStart; x < xEnd; x++) {
-                getTile(x, y).render(g, (int) (x * Tile.TILEWIDTH - handler.getGameCamera().getxOffset()),
+                getTileType(x, y).render(g, (int) (x * Tile.TILEWIDTH - handler.getGameCamera().getxOffset()),
                         (int) (y * Tile.TILEHEIGHT - handler.getGameCamera().getyOffset()));
             }
         }
@@ -55,7 +55,7 @@ public class Level {
         handler.getGameCamera().updateCamera(g);
     }
 
-    public Tile getTile(int x, int y) {
+    public Tile getTileType(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height) {//if no tile is found
             return Tile.nullTile;//defaults to grass
         }
