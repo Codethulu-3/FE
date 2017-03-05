@@ -3,7 +3,6 @@ package slicense.main.entities;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import main.utils.SelectionNode;
 import slicense.main.Handler;
 import slicense.main.gfx.Assets;
 import slicense.main.gfx.GameCamera;
@@ -79,34 +78,35 @@ public abstract class Entity {
         if(selected){
             //highlight
             Level l = handler.getLevel();
-            ArrayList<SelectionNode> nodePool = new ArrayList<SelectionNode>();
             ArrayList<Tile> tilePool = new ArrayList<Tile>();
-            nodePool.add(new SelectionNode(l.getTileAt(worldX, worldY), 0));
+            tilePool.add(l.getTileAt(worldX, worldY));
             
             for (int i = 1; i < moveRange; i++) { //Generate selection
-                int origSize = nodePool.size();
+                int origSize = tilePool.size();
                 for (int j = 0; j < origSize; j++) {
-                    SelectionNode cur = nodePool.get(j);
+                    Tile cur = tilePool.get(j);
                     for (int xCheck = -1; xCheck <= 2; xCheck += 2) { //Check east/west neighbors
-                        Tile neighbor = l.getTileAt(cur.getTile().getWorldX() + xCheck, cur.getTile().getWorldY());
-                        if (!tilePool.contains(neighbor)) {
-                            nodePool.add(new SelectionNode(neighbor, i));
-                            tilePool.add(neighbor);
+                        if (!l.outOfBounds(cur.getWorldX() + xCheck, cur.getWorldY())) { //If we're in the map
+                            Tile neighbor = l.getTileAt(cur.getWorldX() + xCheck, cur.getWorldY());
+                            if (!tilePool.contains(neighbor) && !neighbor.isSolid()) { //If we haven't already added it && it's walkable
+                                tilePool.add(neighbor);
+                            }
                         }
                     }
                     for (int yCheck = -1; yCheck <= 2; yCheck += 2) { //Check north/south neighbors
-                        Tile neighbor = l.getTileAt(cur.getTile().getWorldX(), cur.getTile().getWorldY() + yCheck);
-                        if (!tilePool.contains(neighbor)) {
-                            nodePool.add(new SelectionNode(neighbor, i));
-                            tilePool.add(neighbor);
+                        if (!l.outOfBounds(cur.getWorldX(), cur.getWorldY() + yCheck)) { //If we're in the map
+                            Tile neighbor = l.getTileAt(cur.getWorldX(), cur.getWorldY() + yCheck);
+                            if (!tilePool.contains(neighbor) && !neighbor.isSolid()) { //If we haven't already added it && it's walkable
+                                tilePool.add(neighbor);
+                            }
                         }
                     }
-                }
+                }  
             }
             
-            for (SelectionNode n : nodePool) { //Render selection highlights
-                g.drawImage(Assets.highlight, cam.worldToScreenX(n.getTile().getWorldX()),
-                        cam.worldToScreenY(n.getTile().getWorldY()), Tile.TILEWIDTH, Tile.TILEHEIGHT, null);
+            for (Tile t : tilePool) { //Render selection highlights
+                g.drawImage(Assets.highlight, cam.worldToScreenX(t.getWorldX()),
+                        cam.worldToScreenY(t.getWorldY()), Tile.TILEWIDTH, Tile.TILEHEIGHT, null);
             }
         }
     }

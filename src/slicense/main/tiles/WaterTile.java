@@ -19,4 +19,9 @@ public class WaterTile extends Tile{
     public void render(Graphics g, int x, int y) {
         g.drawImage(Assets.water, x, y, TILEWIDTH, TILEHEIGHT, null);
     }
+    
+    @Override
+    public boolean isSolid() {
+        return true;
+    }
 }

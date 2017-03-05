@@ -27,7 +27,7 @@ public class Level {
         this.handler = handler;
         entityManager = new EntityManager(handler);
         
-        entityManager.addEntity(new Unit1(handler, 10, 10));
+        entityManager.addEntity(new Unit1(handler, 5, 6));
         
         loadWorld(path);
     }
@@ -116,5 +116,11 @@ public class Level {
     
     public Tile getTileAt(int worldX, int worldY) {
         return tiles[worldX][worldY];
+    }
+    
+    public boolean outOfBounds(int worldX, int worldY) {
+        if (worldX < 0 || worldY < 0 || worldX >= width || worldY >= height)
+            return true;
+        return false;
     }
 }

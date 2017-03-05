@@ -38,7 +38,6 @@ public class Tile {
     public boolean isSolid() {
         return false;
     }
-    
 
     public TileID getID() {
         return id;
