@@ -9,6 +9,7 @@ import slicense.main.gfx.Assets;
 import slicense.main.gfx.GameCamera;
 import slicense.main.input.MouseManager;
 import slicense.main.states.GameState;
+import slicense.main.states.MenuState;
 import slicense.main.states.State;
 
 /**
@@ -28,7 +29,9 @@ public class Game extends GameLoop{
     
     private GameCamera camera;
     
+    //states
     private State gameState;
+    private State menuState;
     
     @Override
     public void startup() {
@@ -44,10 +47,14 @@ public class Game extends GameLoop{
         
         mouseManager = new MouseManager();
         
-        gameState = new GameState(handler);
-        State.setState(gameState);
         //initiate images, sounds, etc.
         Assets.init();
+        
+        //initates states
+        gameState = new GameState(handler);
+        menuState = new MenuState(handler);
+        State.setState(gameState);
+        
         
         //set up frame listeners
         display.getFrame().addMouseListener(mouseManager);
@@ -107,6 +114,10 @@ public class Game extends GameLoop{
     
     public MouseManager getMouseManager(){
         return mouseManager;
+    }
+    
+    public State getGameState(){
+        return gameState;
     }
     
 }
