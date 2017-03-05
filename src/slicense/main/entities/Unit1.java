@@ -9,8 +9,8 @@ import slicense.main.Handler;
  */
 public class Unit1 extends Entity{
     
-    public Unit1(Handler handler, float x, float y){
-        super(handler,x,y,Entity.DEFAULT_WIDTH,Entity.DEFAULT_HEIGHT,5);
+    public Unit1(Handler handler, int worldX, int worldY){
+        super(handler, worldX, worldY, Entity.DEFAULT_WIDTH, Entity.DEFAULT_HEIGHT, 3);
     }
     
     @Override
@@ -20,7 +20,7 @@ public class Unit1 extends Entity{
 
     @Override
     public void render(Graphics g) {
-        g.fillRect((int)(x ), (int)(y), width, height);
+        g.fillRect((int)(screenX ), (int)(screenY), width, height);
         drawEffects(g);
     }
     

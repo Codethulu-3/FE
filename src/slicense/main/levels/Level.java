@@ -27,8 +27,7 @@ public class Level {
         this.handler = handler;
         entityManager = new EntityManager(handler);
         
-        entityManager.addEntity(new Unit1(handler, Tile.TILEWIDTH * 2,Tile.TILEHEIGHT*2));
-        entityManager.addEntity(new Unit1(handler, Tile.TILEWIDTH *3,Tile.TILEHEIGHT*2));
+        entityManager.addEntity(new Unit1(handler, 10, 10));
         
         loadWorld(path);
     }
@@ -113,5 +112,9 @@ public class Level {
     
     public Tile[][] getTiles(){
         return tiles;
+    }
+    
+    public Tile getTileAt(int worldX, int worldY) {
+        return tiles[worldX][worldY];
     }
 }

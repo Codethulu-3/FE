@@ -3,8 +3,11 @@ package slicense.main.entities;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import main.utils.SelectionNode;
 import slicense.main.Handler;
 import slicense.main.gfx.Assets;
+import slicense.main.gfx.GameCamera;
+import slicense.main.levels.Level;
 import slicense.main.tiles.Tile;
 
 /**
@@ -16,27 +19,27 @@ public abstract class Entity {
     public static final int DEFAULT_HEALTH = 3;
     public static final int DEFAULT_WIDTH=32,DEFAULT_HEIGHT=32;
     protected Handler handler;
-    protected float x, y;
+    protected float screenX, screenY;
     protected int width, height;
     protected int health;
     protected boolean active = true;
     protected Rectangle bounds;
     protected boolean selected;
-    protected float xStart,yStart;
+    protected int worldX,worldY;
     protected int moveRange;
+    
+    private GameCamera cam;
 
-    public Entity(Handler handler, float x, float y, int width, int height,int moveRange) {
+    public Entity(Handler handler, int worldX, int worldY, int width, int height,int moveRange) {
         this.handler = handler;
-        this.x = x;
-        this.y = y;
         this.width = width;
         this.height = height;
         this.moveRange = moveRange;
         health = DEFAULT_HEALTH;
-
+        cam = handler.getGameCamera();
         bounds = new Rectangle(0, 0, width, height);
-        xStart = x;
-        yStart = y;
+        this.worldX = worldX;
+        this.worldY = worldY;
     }
 
     public abstract void tick();
@@ -48,8 +51,8 @@ public abstract class Entity {
     public void update(){//to be called in units
         select();
         move();
-        x=xStart - handler.getGameCamera().getxOffset();
-        y=yStart - handler.getGameCamera().getyOffset();
+        screenX = cam.worldToScreenX(worldX);
+        screenY = cam.worldToScreenY(worldY);
     }
     
     public void move(){
@@ -60,8 +63,8 @@ public abstract class Entity {
     
     public void select(){
         if(handler.getMouseManager().getLeftPressed()){
-            if(handler.getMouseManager().getMouseX()>x && handler.getMouseManager().getMouseX()<x+DEFAULT_WIDTH){
-                if(handler.getMouseManager().getMouseY()>y && handler.getMouseManager().getMouseY()<y+DEFAULT_HEIGHT){
+            if(handler.getMouseManager().getMouseX()>screenX && handler.getMouseManager().getMouseX()<screenX+DEFAULT_WIDTH){
+                if(handler.getMouseManager().getMouseY()>screenY && handler.getMouseManager().getMouseY()<screenY+DEFAULT_HEIGHT){
                     selected=true;
                 } else {
                     selected=false;
@@ -75,27 +78,54 @@ public abstract class Entity {
     public void drawEffects(Graphics g){
         if(selected){
             //highlight
-            g.drawImage(Assets.highlight,(int) x ,(int) y, Tile.TILEWIDTH,Tile.TILEHEIGHT, null);
+            Level l = handler.getLevel();
+            ArrayList<SelectionNode> nodePool = new ArrayList<SelectionNode>();
+            ArrayList<Tile> tilePool = new ArrayList<Tile>();
+            nodePool.add(new SelectionNode(l.getTileAt(worldX, worldY), 0));
             
-            ArrayList<Tile> pool = new ArrayList<Tile>();
+            for (int i = 1; i < moveRange; i++) { //Generate selection
+                int origSize = nodePool.size();
+                for (int j = 0; j < origSize; j++) {
+                    SelectionNode cur = nodePool.get(j);
+                    for (int xCheck = -1; xCheck <= 2; xCheck += 2) { //Check east/west neighbors
+                        Tile neighbor = l.getTileAt(cur.getTile().getWorldX() + xCheck, cur.getTile().getWorldY());
+                        if (!tilePool.contains(neighbor)) {
+                            nodePool.add(new SelectionNode(neighbor, i));
+                            tilePool.add(neighbor);
+                        }
+                    }
+                    for (int yCheck = -1; yCheck <= 2; yCheck += 2) { //Check north/south neighbors
+                        Tile neighbor = l.getTileAt(cur.getTile().getWorldX(), cur.getTile().getWorldY() + yCheck);
+                        if (!tilePool.contains(neighbor)) {
+                            nodePool.add(new SelectionNode(neighbor, i));
+                            tilePool.add(neighbor);
+                        }
+                    }
+                }
+            }
+            
+            for (SelectionNode n : nodePool) { //Render selection highlights
+                g.drawImage(Assets.highlight, cam.worldToScreenX(n.getTile().getWorldX()),
+                        cam.worldToScreenY(n.getTile().getWorldY()), Tile.TILEWIDTH, Tile.TILEHEIGHT, null);
+            }
         }
     }
     
     //getters and setters
-    public float getX() {
-        return x;
+    public float getScreenX() {
+        return screenX;
     }
 
-    public void setX(float x) {
-        this.x = x;
+    public void setScreenX(float screenX) {
+        this.screenX = screenX;
     }
 
-    public float getY() {
-        return y;
+    public float getScreenY() {
+        return screenY;
     }
 
-    public void setY(float y) {
-        this.y = y;
+    public void setScreenY(float screenY) {
+        this.screenY = screenY;
     }
 
     public int getWidth() {

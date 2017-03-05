@@ -25,7 +25,7 @@ public class GameCamera {
 
     public void updateCamera(Graphics g) {
         moveCamera();
-        checkBlankSpace();
+        //checkBlankSpace();
     }
 
     public void checkBlankSpace() {
@@ -48,5 +48,13 @@ public class GameCamera {
 
     public float getyOffset() {
         return yOffset;
+    }
+    
+    public int worldToScreenX(int worldX) {
+        return (int) (worldX * Tile.TILEWIDTH - xOffset);
+    }
+    
+    public int worldToScreenY(int worldY) {
+        return (int) (worldY * Tile.TILEHEIGHT - yOffset);
     }
 }

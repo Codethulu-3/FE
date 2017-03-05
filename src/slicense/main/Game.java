@@ -41,7 +41,7 @@ public class Game extends GameLoop{
         height = ((int) tk.getScreenSize().getHeight());  
         
         //initiate variables
-        display = new Display("RougeLike",width,height);
+        display = new Display("RougeLike", 1280, 720);
         handler = new Handler(this);
         camera = new GameCamera(handler);
         
