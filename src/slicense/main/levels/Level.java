@@ -28,6 +28,7 @@ public class Level {
         entityManager = new EntityManager(handler);
         
         entityManager.addEntity(new Unit1(handler, 5, 6));
+        entityManager.addEntity(new Unit1(handler, 8, 10));
         
         loadWorld(path);
     }

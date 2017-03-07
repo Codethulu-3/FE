@@ -27,6 +27,8 @@ public abstract class Entity {
     protected int worldX,worldY;
     protected int moveRange;
     
+    protected ArrayList<Tile> highlights;
+    
     private GameCamera cam;
 
     public Entity(Handler handler, int worldX, int worldY, int width, int height,int moveRange) {
@@ -39,6 +41,7 @@ public abstract class Entity {
         bounds = new Rectangle(0, 0, width, height);
         this.worldX = worldX;
         this.worldY = worldY;
+        highlights = new ArrayList<>();
     }
 
     public abstract void tick();
@@ -48,7 +51,7 @@ public abstract class Entity {
     //exending methods
     
     public void update(){//to be called in units
-        select();
+        checkIfClicked();
         move();
         screenX = cam.worldToScreenX(worldX);
         screenY = cam.worldToScreenY(worldY);
@@ -60,51 +63,57 @@ public abstract class Entity {
         }
     }
     
-    public void select(){
+    public void checkIfClicked(){
         if(handler.getMouseManager().getLeftPressed()){
-            if(handler.getMouseManager().getMouseX()>screenX && handler.getMouseManager().getMouseX()<screenX+DEFAULT_WIDTH){
-                if(handler.getMouseManager().getMouseY()>screenY && handler.getMouseManager().getMouseY()<screenY+DEFAULT_HEIGHT){
-                    selected=true;
-                } else {
-                    selected=false;
-                }
+            if (handler.getMouseManager().getMouseX()>screenX && handler.getMouseManager().getMouseX()<screenX+DEFAULT_WIDTH
+                    && handler.getMouseManager().getMouseY()>screenY && handler.getMouseManager().getMouseY()<screenY+DEFAULT_HEIGHT) {
+                onClick();
             } else {
-                selected=false;
+                onDeclick();
+            }
+        }
+    }
+    
+    public void onClick() { //When the entity is clicked
+        selected = true;
+        calcHighlights();
+    }
+    
+    public void onDeclick() { //When there's a click elsewhere
+        selected = false;
+    }
+ 
+    public void calcHighlights() {
+        Level l = handler.getLevel();
+        highlights.clear();
+        highlights.add(l.getTileAt(worldX, worldY));
+        for (int i = 1; i <= moveRange; i++) { //Generate selection
+            int origSize = highlights.size();
+            for (int j = 0; j < origSize; j++) {
+                Tile cur = highlights.get(j);
+                for (int xCheck = -1; xCheck <= 2; xCheck += 2) { //Check east/west neighbors
+                    if (!l.outOfBounds(cur.getWorldX() + xCheck, cur.getWorldY())) { //If we're in the map
+                        Tile neighbor = l.getTileAt(cur.getWorldX() + xCheck, cur.getWorldY());
+                        if (!highlights.contains(neighbor) && !neighbor.isSolid()) { //If we haven't already added it && it's walkable
+                            highlights.add(neighbor);
+                        }
+                    }
+                }
+                for (int yCheck = -1; yCheck <= 2; yCheck += 2) { //Check north/south neighbors
+                    if (!l.outOfBounds(cur.getWorldX(), cur.getWorldY() + yCheck)) { //If we're in the map
+                        Tile neighbor = l.getTileAt(cur.getWorldX(), cur.getWorldY() + yCheck);
+                        if (!highlights.contains(neighbor) && !neighbor.isSolid()) { //If we haven't already added it && it's walkable
+                            highlights.add(neighbor);
+                        }
+                    }
+                }
             }
         }
     }
     
     public void drawEffects(Graphics g){
         if(selected){
-            //highlight
-            Level l = handler.getLevel();
-            ArrayList<Tile> tilePool = new ArrayList<Tile>();
-            tilePool.add(l.getTileAt(worldX, worldY));
-            
-            for (int i = 1; i < moveRange; i++) { //Generate selection
-                int origSize = tilePool.size();
-                for (int j = 0; j < origSize; j++) {
-                    Tile cur = tilePool.get(j);
-                    for (int xCheck = -1; xCheck <= 2; xCheck += 2) { //Check east/west neighbors
-                        if (!l.outOfBounds(cur.getWorldX() + xCheck, cur.getWorldY())) { //If we're in the map
-                            Tile neighbor = l.getTileAt(cur.getWorldX() + xCheck, cur.getWorldY());
-                            if (!tilePool.contains(neighbor) && !neighbor.isSolid()) { //If we haven't already added it && it's walkable
-                                tilePool.add(neighbor);
-                            }
-                        }
-                    }
-                    for (int yCheck = -1; yCheck <= 2; yCheck += 2) { //Check north/south neighbors
-                        if (!l.outOfBounds(cur.getWorldX(), cur.getWorldY() + yCheck)) { //If we're in the map
-                            Tile neighbor = l.getTileAt(cur.getWorldX(), cur.getWorldY() + yCheck);
-                            if (!tilePool.contains(neighbor) && !neighbor.isSolid()) { //If we haven't already added it && it's walkable
-                                tilePool.add(neighbor);
-                            }
-                        }
-                    }
-                }  
-            }
-            
-            for (Tile t : tilePool) { //Render selection highlights
+            for (Tile t : highlights) { //Render selection highlights
                 g.drawImage(Assets.highlight, cam.worldToScreenX(t.getWorldX()),
                         cam.worldToScreenY(t.getWorldY()), Tile.TILEWIDTH, Tile.TILEHEIGHT, null);
             }
