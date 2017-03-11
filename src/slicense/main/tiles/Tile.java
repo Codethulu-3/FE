@@ -1,40 +1,64 @@
 package slicense.main.tiles;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import slicense.main.gfx.Assets;
+import slicense.main.Handler;
+import static slicense.main.entities.Entity.DEFAULT_HEIGHT;
+import static slicense.main.entities.Entity.DEFAULT_WIDTH;
 
 /**
  *
  * CodeNMore
  */
 
-public class Tile {
+public abstract class Tile {
 
     //STATIC STUFF HERE
-    
     public static Tile[] tiles = new Tile[256];
 
-    
     //CLASS
     public static final int TILEWIDTH = 64, TILEHEIGHT = 64;
     protected final TileID id;
-    private int worldX, worldY;
-
-    public Tile(int worldX, int worldY, TileID id) {
+    protected Handler handler;
+    protected int worldX, worldY;
+    protected float screenX, screenY;
+    protected boolean highlighted;
+    public Tile(Handler handler, int worldX, int worldY, TileID id) {
         this.id = id;
-
+        this.handler = handler;
         this.worldX = worldX;
         this.worldY = worldY;
     }
 
     public void tick() {
+        screenX = handler.getGameCamera().worldToScreenX(worldX);
+        screenY = handler.getGameCamera().worldToScreenY(worldY);
+        checkIfHovered();
     }
 
-    public void render(Graphics g, int x, int y) {
-        System.err.println("Render has not been overridden!");
+    public void checkIfHovered() {
+        if (handler.getMouseManager().getMouseX() > screenX && handler.getMouseManager().getMouseX() < screenX + DEFAULT_WIDTH
+                && handler.getMouseManager().getMouseY() > screenY && handler.getMouseManager().getMouseY() < screenY + DEFAULT_HEIGHT) {
+            onMouseEnter();
+        } else {
+            onMouseExit();
+        }
     }
+    
+    public void onMouseEnter() {
+        //When the mouse hovers over the tile
+        if (highlighted) {
+            
+        }
+    }
+    
+    public void onMouseExit() {
+        //When the mouse leaves the tile
+        
+    }
+    
+    public abstract void render(Graphics g, int x, int y);
 
+    //Getters and setters
     public boolean isSolid() {
         return false;
     }
@@ -49,5 +73,13 @@ public class Tile {
     
     public int getWorldY() {
         return worldY;
+    }
+    
+    public void setHighlighted(boolean value) {
+        highlighted = value;
+    }
+    
+    public boolean isHighlighted() {
+        return highlighted;
     }
 }

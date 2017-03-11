@@ -1,6 +1,8 @@
 package slicense.main.levels;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
+import main.pathfinding.AStarPathfinding;
 import slicense.main.Handler;
 import slicense.main.Utils;
 import slicense.main.entities.EntityManager;
@@ -16,6 +18,7 @@ public class Level {
     private Handler handler;
     private int width, height;
     private int spawnX, spawnY;
+    private AStarPathfinding as;
     
     private Tile[][] tiles;
     
@@ -31,6 +34,7 @@ public class Level {
         entityManager.addEntity(new Unit1(handler, 8, 10));
         
         loadWorld(path);
+        as = new AStarPathfinding(this);
     }
 
     public void tick() {
@@ -78,10 +82,10 @@ public class Level {
                 int tt = Utils.parseInt(tokens[(x + y * width) + 4]);
                 switch (tt) {
                     case 0:
-                        tiles[x][y] = new GrassTile(x, y);
+                        tiles[x][y] = new GrassTile(handler, x, y);
                         break;
                     case 1:
-                        tiles[x][y] = new WaterTile(x, y);
+                        tiles[x][y] = new WaterTile(handler, x, y);
                         break;
                     default:
                         System.err.println("Unregonized tile id " + tt + "!");
@@ -123,5 +127,26 @@ public class Level {
         if (worldX < 0 || worldY < 0 || worldX >= width || worldY >= height)
             return true;
         return false;
+    }
+    
+    public AStarPathfinding getPathing() {
+        return as;
+    }
+    
+    public ArrayList<Tile> getWalkableNeighbors(Tile tile) {
+        ArrayList<Tile> walkableNeighbors = new ArrayList<>();
+        for (int x = -1; x <= 1; x += 2) {
+            Tile neighborToCheck = tiles[tile.getWorldX() + x][tile.getWorldY()];
+            if (!neighborToCheck.isSolid()) {
+                walkableNeighbors.add(neighborToCheck);
+            }
+        }
+        for (int y = -1; y <= 1; y += 2) {
+            Tile neighborToCheck = tiles[tile.getWorldX()][tile.getWorldY() + y];
+            if (!neighborToCheck.isSolid()) {
+                walkableNeighbors.add(neighborToCheck);
+            }
+        }
+        return walkableNeighbors;
     }
 }

@@ -1,6 +1,7 @@
 package slicense.main.tiles;
 
 import java.awt.Graphics;
+import slicense.main.Handler;
 import slicense.main.gfx.Assets;
 import static slicense.main.tiles.Tile.TILEHEIGHT;
 import static slicense.main.tiles.Tile.TILEWIDTH;
@@ -11,8 +12,8 @@ import static slicense.main.tiles.Tile.TILEWIDTH;
  */
 public class WaterTile extends Tile{
     
-    public WaterTile(int worldX, int worldY) {
-	super(worldX, worldY, TileID.Water);
+    public WaterTile(Handler handler, int worldX, int worldY) {
+	super(handler, worldX, worldY, TileID.Water);
     }
     
     @Override
