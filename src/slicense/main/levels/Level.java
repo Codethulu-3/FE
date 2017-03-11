@@ -28,13 +28,14 @@ public class Level {
 
     public Level(Handler handler, String path) {
         this.handler = handler;
-        entityManager = new EntityManager(handler);
-        
-        entityManager.addEntity(new Unit1(handler, 5, 6));
-        entityManager.addEntity(new Unit1(handler, 8, 10));
-        
+        entityManager = new EntityManager(handler);       
         loadWorld(path);
         as = new AStarPathfinding(this);
+    }
+    
+    public void initEntities() {
+        entityManager.addEntity(new Unit1(handler, 5, 6));
+        entityManager.addEntity(new Unit1(handler, 8, 10));
     }
 
     public void tick() {

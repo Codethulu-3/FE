@@ -12,6 +12,7 @@ public class GameState extends State {
         super(handler);
         level = new Level(handler, "res/levels/level1.txt");//loads current level
         handler.setLevel(level);//sets getter for level in handler
+        level.initEntities();
     }
 
     @Override
