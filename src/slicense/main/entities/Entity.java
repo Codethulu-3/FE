@@ -87,10 +87,14 @@ public abstract class Entity {
     }
     
     public void updateTileHover() {
-        Tile newHoveredTile = level.getTileAt((int) ((handler.getMouseManager().getMouseX() + cam.getxOffset()) / Tile.TILEWIDTH), (int) ((handler.getMouseManager().getMouseY() + cam.getyOffset()) / Tile.TILEHEIGHT));
-        if (newHoveredTile != hoveredTile) {
-            hoveredTile = newHoveredTile;
-            calcPath();
+        int x = (int) ((handler.getMouseManager().getMouseX() + cam.getxOffset()) / Tile.TILEWIDTH);
+        int y = (int) ((handler.getMouseManager().getMouseY() + cam.getyOffset()) / Tile.TILEHEIGHT);
+        if (!level.outOfBounds(x, y)) {
+            Tile newHoveredTile = level.getTileAt(x,y);
+            if (newHoveredTile != hoveredTile) {
+                hoveredTile = newHoveredTile;
+                calcPath();
+            }
         }
     }
  
