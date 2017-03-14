@@ -11,7 +11,7 @@ import java.awt.event.MouseMotionListener;
  */
 public class MouseManager implements MouseListener, MouseMotionListener {
 
-    private boolean leftPressed, rightPressed;
+    private boolean leftPressed, rightPressed, leftClicked, rightClicked;
     private int mouseX,mouseY;
     private Point origin = new Point(0,0);
     private Point mousePt;
@@ -24,8 +24,10 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftPressed = true;
+            leftClicked = true;
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             rightPressed = true;
+            rightClicked = true;
         }
         if(rightPressed){
             mousePt = e.getPoint();
@@ -65,6 +67,11 @@ public class MouseManager implements MouseListener, MouseMotionListener {
         mouseY = e.getY();
     }
     
+    public void tick() {
+        leftClicked = false;
+        rightClicked = false;
+    }
+    
     //getters and setters
     
     public boolean getLeftPressed(){
@@ -72,6 +79,14 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     }
     public boolean getRightPressed(){
         return rightPressed;
+    }
+    
+    public boolean getLeftClicked() {
+        return leftClicked;
+    }
+    
+    public boolean getRightClicked() {
+        return rightClicked;
     }
     
     public int getMouseX(){

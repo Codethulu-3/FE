@@ -80,6 +80,7 @@ public class Game extends GameLoop{
     @Override
     public void update() {
         State.getState().tick();
+        mouseManager.tick();
     }
 
     @Override

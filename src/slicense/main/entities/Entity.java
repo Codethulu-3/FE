@@ -63,7 +63,7 @@ public abstract class Entity {
     }
 
     public void checkIfClicked(){
-        if(handler.getMouseManager().getLeftPressed()){
+        if(handler.getMouseManager().getLeftClicked()){
             if (handler.getMouseManager().getMouseX()>screenX && handler.getMouseManager().getMouseX()<screenX+DEFAULT_WIDTH
                     && handler.getMouseManager().getMouseY()>screenY && handler.getMouseManager().getMouseY()<screenY+DEFAULT_HEIGHT) {
                 onClick();
