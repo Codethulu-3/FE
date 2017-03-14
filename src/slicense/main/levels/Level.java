@@ -138,13 +138,13 @@ public class Level {
         ArrayList<Tile> walkableNeighbors = new ArrayList<>();
         for (int x = -1; x <= 1; x += 2) {
             Tile neighborToCheck = tiles[tile.getWorldX() + x][tile.getWorldY()];
-            if (!neighborToCheck.isSolid()) {
+            if (!neighborToCheck.isBlocked()) {
                 walkableNeighbors.add(neighborToCheck);
             }
         }
         for (int y = -1; y <= 1; y += 2) {
             Tile neighborToCheck = tiles[tile.getWorldX()][tile.getWorldY() + y];
-            if (!neighborToCheck.isSolid()) {
+            if (!neighborToCheck.isBlocked()) {
                 walkableNeighbors.add(neighborToCheck);
             }
         }

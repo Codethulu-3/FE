@@ -14,15 +14,11 @@ public class WaterTile extends Tile{
     
     public WaterTile(Handler handler, int worldX, int worldY) {
 	super(handler, worldX, worldY, TileID.Water);
+        setBlocked(true);
     }
     
     @Override
     public void render(Graphics g, int x, int y) {
         g.drawImage(Assets.water, x, y, TILEWIDTH, TILEHEIGHT, null);
-    }
-    
-    @Override
-    public boolean isSolid() {
-        return true;
     }
 }

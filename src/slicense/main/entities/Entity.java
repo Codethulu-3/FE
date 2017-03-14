@@ -47,6 +47,8 @@ public abstract class Entity {
         this.worldY = worldY;
         highlights = new ArrayList<>();
         path = new ArrayList<>();
+        
+        level.getTileAt(worldX, worldY).setBlocked(true);
     }
 
     public abstract void tick();
@@ -67,6 +69,8 @@ public abstract class Entity {
             if (handler.getMouseManager().getMouseX()>screenX && handler.getMouseManager().getMouseX()<screenX+DEFAULT_WIDTH
                     && handler.getMouseManager().getMouseY()>screenY && handler.getMouseManager().getMouseY()<screenY+DEFAULT_HEIGHT) {
                 onClick();
+            } else if (highlights.contains(hoveredTile)) {
+                onHighlightClick();
             } else {
                 onDeclick();
             }
@@ -80,12 +84,19 @@ public abstract class Entity {
 
     public void onDeclick() { //When there's a click elsewhere
         selected = false;
-        for (Tile t : highlights) {
-            t.setHighlighted(false);
-        }
         highlights.clear();
+        path.clear();
     }
     
+    public void onHighlightClick() {
+        path.clear();
+        level.getTileAt(worldX, worldY).setBlocked(false);
+        worldX = hoveredTile.getWorldX();
+        worldY = hoveredTile.getWorldY();
+        level.getTileAt(worldX, worldY).setBlocked(true);
+        calcHighlights();
+    }
+
     public void updateTileHover() {
         int x = (int) ((handler.getMouseManager().getMouseX() + cam.getxOffset()) / Tile.TILEWIDTH);
         int y = (int) ((handler.getMouseManager().getMouseY() + cam.getyOffset()) / Tile.TILEHEIGHT);
@@ -99,9 +110,6 @@ public abstract class Entity {
     }
  
     public void calcHighlights() {
-        for (Tile t : highlights) {
-            t.setHighlighted(false);
-        }
         highlights.clear();
         highlights.add(level.getTileAt(worldX, worldY));
         for (int i = 1; i <= moveRange; i++) { //Generate selection
@@ -111,7 +119,7 @@ public abstract class Entity {
                 for (int xCheck = -1; xCheck <= 2; xCheck += 2) { //Check east/west neighbors
                     if (!level.outOfBounds(cur.getWorldX() + xCheck, cur.getWorldY())) { //If we're in the map
                         Tile neighbor = level.getTileAt(cur.getWorldX() + xCheck, cur.getWorldY());
-                        if (!highlights.contains(neighbor) && !neighbor.isSolid()) { //If we haven't already added it && it's walkable
+                        if (!highlights.contains(neighbor) && !neighbor.isBlocked()) { //If we haven't already added it && it's walkable
                             highlights.add(neighbor);
                         }
                     }
@@ -119,16 +127,14 @@ public abstract class Entity {
                 for (int yCheck = -1; yCheck <= 2; yCheck += 2) { //Check north/south neighbors
                     if (!level.outOfBounds(cur.getWorldX(), cur.getWorldY() + yCheck)) { //If we're in the map
                         Tile neighbor = level.getTileAt(cur.getWorldX(), cur.getWorldY() + yCheck);
-                        if (!highlights.contains(neighbor) && !neighbor.isSolid()) { //If we haven't already added it && it's walkable
+                        if (!highlights.contains(neighbor) && !neighbor.isBlocked()) { //If we haven't already added it && it's walkable
                             highlights.add(neighbor);
                         }
                     }
                 }
             }
         }
-        for (Tile t : highlights) {
-            t.setHighlighted(true);
-        }
+        highlights.remove(level.getTileAt(worldX, worldY));
     }
     
     public void drawEffects(Graphics g) {
@@ -148,9 +154,10 @@ public abstract class Entity {
     }
     
     public void calcPath() {
-        if (hoveredTile.isHighlighted()) {
+        if (highlights.contains(hoveredTile)) {
             path = level.getPathing().getPath(level.getTileAt(worldX, worldY), hoveredTile);
         }
+        path.remove(level.getTileAt(worldX, worldY));
     }
 
     //getters and setters

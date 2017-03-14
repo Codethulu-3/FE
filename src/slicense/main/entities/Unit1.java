@@ -10,7 +10,7 @@ import slicense.main.Handler;
 public class Unit1 extends Entity{
     
     public Unit1(Handler handler, int worldX, int worldY){
-        super(handler, worldX, worldY, Entity.DEFAULT_WIDTH, Entity.DEFAULT_HEIGHT, 20);
+        super(handler, worldX, worldY, Entity.DEFAULT_WIDTH, Entity.DEFAULT_HEIGHT, 6);
     }
     
     @Override

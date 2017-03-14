@@ -21,7 +21,8 @@ public abstract class Tile {
     protected Handler handler;
     protected int worldX, worldY;
     protected float screenX, screenY;
-    protected boolean highlighted;
+    protected boolean blocked;
+    
     public Tile(Handler handler, int worldX, int worldY, TileID id) {
         this.id = id;
         this.handler = handler;
@@ -46,9 +47,7 @@ public abstract class Tile {
     
     public void onMouseEnter() {
         //When the mouse hovers over the tile
-        if (highlighted) {
-            
-        }
+
     }
     
     public void onMouseExit() {
@@ -58,9 +57,13 @@ public abstract class Tile {
     
     public abstract void render(Graphics g, int x, int y);
 
+    public void setBlocked(boolean value) {
+        blocked = value;
+    }
+    
     //Getters and setters
-    public boolean isSolid() {
-        return false;
+    public boolean isBlocked() {
+        return blocked;
     }
 
     public TileID getID() {
@@ -73,13 +76,5 @@ public abstract class Tile {
     
     public int getWorldY() {
         return worldY;
-    }
-    
-    public void setHighlighted(boolean value) {
-        highlighted = value;
-    }
-    
-    public boolean isHighlighted() {
-        return highlighted;
     }
 }
