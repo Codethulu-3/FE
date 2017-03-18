@@ -1,9 +1,13 @@
 package slicense.main.input;
 
+import java.awt.AWTException;
 import java.awt.Point;
+import java.awt.Robot;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,7 +19,16 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     private int mouseX,mouseY;
     private Point origin = new Point(0,0);
     private Point mousePt;
-
+    private Robot r;
+    
+    public MouseManager(){
+        try {
+            r = new Robot();
+        } catch (AWTException ex) {
+            Logger.getLogger(MouseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @Override
     public void mouseClicked(MouseEvent e) {
     }
@@ -40,6 +53,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
             leftPressed = false;
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             rightPressed = false;
+            r.mouseMove(mousePt.x+3, mousePt.y+27);//cheap hack
         }
     }
 
