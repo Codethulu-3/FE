@@ -25,10 +25,11 @@ public class GameCamera {
 
     public void updateCamera(Graphics g) {
         moveCamera();
-        //checkBlankSpace();
+        checkBlankSpace();
     }
 
     public void checkBlankSpace() {
+        
         if (xOffset < 0) {
             xOffset = 0;
         } else if (xOffset > handler.getLevel().getWidth() * Tile.TILEWIDTH - handler.getWidth()) {
@@ -39,6 +40,13 @@ public class GameCamera {
             yOffset = 0;
         } else if (yOffset > handler.getLevel().getHeight() * Tile.TILEHEIGHT - handler.getHeight()) {
             yOffset = handler.getLevel().getHeight() * Tile.TILEHEIGHT - handler.getHeight();
+        }
+        
+        if(handler.getMouseManager().getOrigin().x>0){
+            handler.getMouseManager().getOrigin().x = 0;
+        }
+        if(handler.getMouseManager().getOrigin().y>0){
+            handler.getMouseManager().getOrigin().y=0;
         }
     }
     

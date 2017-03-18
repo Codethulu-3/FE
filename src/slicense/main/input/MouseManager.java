@@ -53,8 +53,8 @@ public class MouseManager implements MouseListener, MouseMotionListener {
             leftPressed = false;
         } else if (e.getButton() == MouseEvent.BUTTON3) {
             rightPressed = false;
-            System.out.println(mousePt.x);
             r.mouseMove(e.getXOnScreen() ,e.getYOnScreen()+1);//cheap hack
+            r.mouseMove(e.getXOnScreen() ,e.getYOnScreen());
         }
     }
 
