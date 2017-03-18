@@ -31,8 +31,8 @@ public abstract class Tile {
     }
 
     public void tick() {
-        screenX = handler.getGameCamera().worldToScreenX(worldX);
-        screenY = handler.getGameCamera().worldToScreenY(worldY);
+        screenX = handler.getCamera().worldToScreenX(worldX);
+        screenY = handler.getCamera().worldToScreenY(worldY);
         checkIfHovered();
     }
 

@@ -14,7 +14,7 @@ public class Handler {
         this.game = game;
     }
     
-    public GameCamera getGameCamera(){
+    public GameCamera getCamera(){
         return game.getGameCamera();
     }
     

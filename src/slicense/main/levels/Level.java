@@ -43,22 +43,22 @@ public class Level {
     }
 
     public void render(Graphics g) {
-        int xStart = (int) Math.max(0, handler.getGameCamera().getxOffset() / Tile.TILEWIDTH);
-        int xEnd = (int) Math.min(width, (handler.getGameCamera().getxOffset() + handler.getWidth()) / Tile.TILEWIDTH + 1);
-        int yStart = (int) Math.max(0, handler.getGameCamera().getyOffset() / Tile.TILEHEIGHT);
-        int yEnd = (int) Math.min(height, (handler.getGameCamera().getyOffset() + handler.getHeight()) / Tile.TILEHEIGHT + 1);
+        int xStart = (int) Math.max(0, handler.getCamera().getxOffset() / Tile.TILEWIDTH);
+        int xEnd = (int) Math.min(width, (handler.getCamera().getxOffset() + handler.getWidth()) / Tile.TILEWIDTH + 1);
+        int yStart = (int) Math.max(0, handler.getCamera().getyOffset() / Tile.TILEHEIGHT);
+        int yEnd = (int) Math.min(height, (handler.getCamera().getyOffset() + handler.getHeight()) / Tile.TILEHEIGHT + 1);
         
         for (int y = yStart; y < yEnd; y++) {
             for (int x = xStart; x < xEnd; x++) {
-                int screenX = (int) (x * Tile.TILEWIDTH - handler.getGameCamera().getxOffset());
-                int screenY = (int) (y * Tile.TILEHEIGHT - handler.getGameCamera().getyOffset());
+                int screenX = (int) (x * Tile.TILEWIDTH - handler.getCamera().getxOffset());
+                int screenY = (int) (y * Tile.TILEHEIGHT - handler.getCamera().getyOffset());
                 tiles[x][y].render(g, screenX, screenY);
             }
         }
         //Entities
         entityManager.render(g);
         //camera
-        handler.getGameCamera().updateCamera(g);
+        handler.getCamera().updateCamera(g);
     }
 
     public TileID getTileID(int x, int y) {

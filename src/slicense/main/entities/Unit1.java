@@ -7,15 +7,10 @@ import slicense.main.Handler;
  *
  * @author Alex
  */
-public class Unit1 extends Entity{
+public class Unit1 extends Unit {
     
     public Unit1(Handler handler, int worldX, int worldY){
-        super(handler, worldX, worldY, Entity.DEFAULT_WIDTH, Entity.DEFAULT_HEIGHT, 6);
-    }
-    
-    @Override
-    public void tick() {
-        update();
+        super(handler, worldX, worldY, Entity.DEFAULT_WIDTH, Entity.DEFAULT_HEIGHT, 20, 6);
     }
 
     @Override
@@ -23,7 +18,4 @@ public class Unit1 extends Entity{
         g.fillRect((int)(screenX ), (int)(screenY), width, height);
         drawEffects(g);
     }
-    
-    
-    
 }
