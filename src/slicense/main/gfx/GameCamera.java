@@ -44,15 +44,19 @@ public class GameCamera {
         
         if(handler.getMouseManager().getOrigin().x>0){
             handler.getMouseManager().getOrigin().x = 0;
+        } else if(handler.getMouseManager().getOrigin().x < -(handler.getLevel().getWidth() * Tile.TILEWIDTH - handler.getWidth())){
+            handler.getMouseManager().getOrigin().x = -(handler.getLevel().getWidth() * Tile.TILEWIDTH - handler.getWidth());
         }
         if(handler.getMouseManager().getOrigin().y>0){
             handler.getMouseManager().getOrigin().y=0;
+        } else if(handler.getMouseManager().getOrigin().y < -(handler.getLevel().getHeight() * Tile.TILEHEIGHT - handler.getHeight())){
+            handler.getMouseManager().getOrigin().y = -(handler.getLevel().getHeight() * Tile.TILEHEIGHT - handler.getHeight());
         }
     }
     
     public int getTileX(){
         int x;
-        if(handler.getMouseManager().getRightPressed()){
+        if(handler.getMouseManager().getRightPressed() && handler.getMouseManager().getOrigin().x<0){
             x = oldX;
         } else {
             x = (int) ((handler.getMouseManager().getMouseX() + xOffset) / Tile.TILEWIDTH);
@@ -63,7 +67,7 @@ public class GameCamera {
     
     public int getTileY(){
         int y;
-        if(handler.getMouseManager().getRightPressed()){
+        if(handler.getMouseManager().getRightPressed() && handler.getMouseManager().getOrigin().y<0){
             y = oldY;
         } else {
             y = (int) ((handler.getMouseManager().getMouseY() + yOffset) / Tile.TILEHEIGHT);
