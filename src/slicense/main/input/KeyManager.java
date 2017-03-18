@@ -9,7 +9,7 @@ import java.awt.event.KeyListener;
  */
 public class KeyManager implements KeyListener{
     
-    
+    public boolean escapePressed;
     
     @Override
     public void keyTyped(KeyEvent e) {
@@ -17,6 +17,7 @@ public class KeyManager implements KeyListener{
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_ESCAPE){escapePressed=true;}
     }
 
     @Override

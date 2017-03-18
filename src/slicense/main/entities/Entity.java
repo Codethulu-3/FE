@@ -75,6 +75,11 @@ public abstract class Entity {
                 onDeclick();
             }
         }
+        
+        if(handler.getKeyManager().escapePressed){
+            onDeclick();
+            handler.getKeyManager().escapePressed=false;
+        }
     }
     
     public void onClick() { //When the entity is clicked

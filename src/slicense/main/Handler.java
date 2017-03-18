@@ -1,6 +1,7 @@
 package slicense.main;
 
 import slicense.main.gfx.GameCamera;
+import slicense.main.input.KeyManager;
 import slicense.main.input.MouseManager;
 import slicense.main.levels.Level;
 
@@ -19,6 +20,10 @@ public class Handler {
     
     public MouseManager getMouseManager(){
         return game.getMouseManager();
+    }
+    
+    public KeyManager getKeyManager(){
+        return game.getKeyManager();
     }
 
     public int getWidth() {

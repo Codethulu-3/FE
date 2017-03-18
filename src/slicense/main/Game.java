@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import slicense.main.gfx.Assets;
 import slicense.main.gfx.GameCamera;
+import slicense.main.input.KeyManager;
 import slicense.main.input.MouseManager;
 import slicense.main.states.GameState;
 import slicense.main.states.MenuState;
@@ -26,6 +27,7 @@ public class Game extends GameLoop{
     private Handler handler;
     
     private MouseManager mouseManager;
+    private KeyManager keyManager;
     
     private GameCamera camera;
     
@@ -46,6 +48,7 @@ public class Game extends GameLoop{
         camera = new GameCamera(handler);
         
         mouseManager = new MouseManager();
+        keyManager = new KeyManager();
         
         //initiate images, sounds, etc.
         Assets.init();
@@ -61,6 +64,9 @@ public class Game extends GameLoop{
         display.getCanvas().addMouseListener(mouseManager);
         display.getFrame().addMouseMotionListener(mouseManager);
         display.getCanvas().addMouseMotionListener(mouseManager);
+        
+        display.getFrame().addKeyListener(keyManager);
+        display.getCanvas().addKeyListener(keyManager);
         
         //set up closing operation, don't touch this
         display.getFrame().addWindowListener(new WindowAdapter() {
@@ -115,6 +121,9 @@ public class Game extends GameLoop{
     
     public MouseManager getMouseManager(){
         return mouseManager;
+    }
+    public KeyManager getKeyManager(){
+        return keyManager;
     }
     
     public State getGameState(){
