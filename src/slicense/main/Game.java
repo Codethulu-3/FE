@@ -39,11 +39,14 @@ public class Game extends GameLoop{
     public void startup() {
         //sets width and height, don't touch this
         Toolkit tk = Toolkit.getDefaultToolkit();  
-        width = ((int) tk.getScreenSize().getWidth());  
-        height = ((int) tk.getScreenSize().getHeight());  
+        //width = ((int) tk.getScreenSize().getWidth());  
+        //height = ((int) tk.getScreenSize().getHeight());  
+        
+        width=1280;
+        height=720;
         
         //initiate variables
-        display = new Display("RougeLike", 1280, 720);
+        display = new Display("RougeLike", width, height);
         handler = new Handler(this);
         camera = new GameCamera(handler);
         
